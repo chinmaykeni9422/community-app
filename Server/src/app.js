@@ -18,8 +18,10 @@ app.use(cors({
 app.use(bodyParser.json()) ;
 
 //ROutes
-import newUserRoutes from "./routes/newUser.routes.js"
+import newUserRoutes from "./routes/newUser.routes.js" ;
+import existedUserRoutes from "./routes/existedUser.routes.js" ;
 
 app.use('/api/newUser', newUserRoutes) ;
+app.use('/api/existedUser', existedUserRoutes) ;
 
 export default app ;
