@@ -1,9 +1,10 @@
 import {Router} from "express" ;
-import { checkRefNum, checkUserMobNum } from "../controllers/newUser.controlller.js";
+import { checkRefNum, checkUserMobNum, verifyOTP } from "../controllers/newUser.controlller.js";
 
 const router = Router() ;
 
-router.get("/checkRef", checkRefNum) ;
-// router.post("/login" , logInUser) ;
+router.post("/checkRef", checkRefNum) ;
+router.post("/checkMobNum", checkUserMobNum) ;
+router.post("/verifyotp", verifyOTP) ;
 
 export default router;
