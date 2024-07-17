@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Toast from "./Toast.jsx"
 import axios from "axios" ;
 
 function RefNum() {
@@ -36,7 +35,6 @@ function RefNum() {
         <>
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
                 <div className="max-w-lg mx-auto px-4">
-                    {toast.message && <Toast message={toast.message} type={toast.type} />}
                     <div className="bg-white shadow-md rounded-lg p-6">
                         <h1 className="text-3xl font-bold text-center mb-8">Enter Reference Number</h1>
                         <form onSubmit={handleSubmit} className="space-y-4">
@@ -60,6 +58,11 @@ function RefNum() {
                                 </button>
                             </div>
                         </form>
+                        {toast.message && (
+                            <div className={`mt-4 p-4 rounded-md ${toast.type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                {toast.message}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

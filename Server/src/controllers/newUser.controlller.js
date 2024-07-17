@@ -43,13 +43,13 @@ export const checkUserMobNum = async (req, res) => {
 
     try {
         if (!mobile_number) {
-            return res.status(400).json(new ApiResponse(400, null, "Mobile number is required"));
+            return res.send(new ApiResponse(400, null, "Mobile number is required"));
         }
 
         const user = await mobNumCheck(mobile_number);
 
         if (user.length > 0) {
-            return res.status(400).json(new ApiResponse(400, null, "Mobile number already exists"));
+            return res.send(new ApiResponse(400, null, "Mobile number already exists"));
         }
 
         // Generate OTP
@@ -62,15 +62,15 @@ export const checkUserMobNum = async (req, res) => {
         const otpSent = await sendOTP(mobile_number, otp);
 
         if (!otpSent) {
-            return res.status(500).json(new ApiResponse(500, null, "Failed to send OTP"));
+            return res.send(new ApiResponse(400, null, "Failed to send OTP"));
         }
 
         // Store the mobile number in temporary storage
         await setTempData("user_mobile_number", mobile_number);
 
-        return res.status(200).json(new ApiResponse(200, { otp }, "OTP sent successfully"));
+        return res.send(new ApiResponse(200, { otp }, "OTP sent successfully"));
     } catch (error) {
-        return res.status(500).json(new ApiResponse(500, null, `Error: ${error.message}`));
+        return res.send(new ApiResponse(400, null, `Error: ${error.message}`));
     }
 };
 
@@ -82,11 +82,11 @@ export const verifyOTP = async (req, res) => {
         const mobile_number = await getTempData("user_mobile_number");
 
         if (!mobile_number) {
-            return res.status(400).json(new ApiResponse(400, null, "Mobile number is required"));
+            return res.send(new ApiResponse(400, null, "Mobile number is required"));
         }
 
         if (!otp || !password) {
-            return res.status(400).json(new ApiResponse(400, null, "All fields are required"));
+            return res.send(new ApiResponse(400, null, "All fields are required"));
         }
 
         // Retrieve reference mobile number from temporary storage
@@ -96,7 +96,7 @@ export const verifyOTP = async (req, res) => {
         const storedOtp = getOTP("otp");
 
         if (storedOtp !== otp) {
-            return res.status(400).json(new ApiResponse(400, null, "Invalid OTP"));
+            return res.send(new ApiResponse(400, null, "Invalid OTP"));
         }
 
         // Create user
@@ -107,8 +107,8 @@ export const verifyOTP = async (req, res) => {
         clearTempData("reference_mobile_number");
         clearTempData("user_mobile_number");
 
-        return res.status(201).json(new ApiResponse(201, { user_id: userId }, "User created successfully"));
+        return res.send(new ApiResponse(201, { user_id: userId }, "User created successfully"));
     } catch (error) {
-        return res.status(500).json(new ApiResponse(500, null, `Error: ${error.message}`));
+        return res.send(new ApiResponse(500, null, `Error: ${error.message}`));
     }
 };
