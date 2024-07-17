@@ -14,7 +14,7 @@ export const pool = mysql.createPool({
 
 }) ;
 
-export const conectDB = async () => {
+export const connectDB = async () => {
     try {
         const connection = await pool.getConnection() ;
         console.log(`mySQL database Connected !!`) ;

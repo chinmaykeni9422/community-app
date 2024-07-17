@@ -5,19 +5,21 @@ import ApiError from "../utils/ApiError.js" ;
 import ApiResponse from "../utils/ApiResponse.js" ;
 
 export const checkRefNum = async (req, res) => {
-    const { referenceMobileNumber } = req.body;
+    const { reference_mobile_number } = req.body;
+
+    if (reference_mobile_number === '') {
+        return res.send(new ApiResponse(404, {}, "Enter reference mobile number"));
+    }
 
     try {
-        const refUser = await refferanceNumberCheck(referenceMobileNumber);
+        const refUser = await refferanceNumberCheck(reference_mobile_number);
 
         if (refUser.length === 0) {
-            return res
-                .status(404)
-                .json(new ApiResponse(404, {}, "Reference User not found"));
+            return res.send(new ApiResponse(404, {}, "Reference User not found"));
         }
 
         // Save reference_mobile_number in temporary storage
-        await setTempData("reference_mobile_number", referenceMobileNumber);
+        await setTempData("reference_mobile_number", reference_mobile_number);
 
         const user = refUser[0]; // Access the first user from the array
 
@@ -26,9 +28,10 @@ export const checkRefNum = async (req, res) => {
             .json(new ApiResponse(201, {
                 user_id: user.user_id,
                 mobile_number: user.mobile_number,
-                reference_mobile_number: user.referenceMobileNumber
+                reference_mobile_number: user.reference_mobile_number
             }, "Reference User found"));
     } catch (error) {
+        console.error('Error occurred:', error);
         return res
             .status(500)
             .json(new ApiError(500, `Error: ${error.message}`));

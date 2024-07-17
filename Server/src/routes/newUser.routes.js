@@ -3,8 +3,8 @@ import { checkRefNum, checkUserMobNum, verifyOTP } from "../controllers/newUser.
 
 const router = Router() ;
 
-router.post("/checkRef", checkRefNum) ;
-router.post("/checkMobNum", checkUserMobNum) ;
-router.post("/verifyotp", verifyOTP) ;
+router.route("/checkref").post(checkRefNum) ;
+router.route("/checkMobNum").post(checkUserMobNum) ;
+router.route("/verifyotp").post(verifyOTP) ;
 
 export default router;
