@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const OTPEntry = () => {
     const [otp, setOtp] = useState('');
     const [password, setPassword] = useState('');
     const [toast, setToast] = useState({ message: '', type: '' });
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const receivedOtp = location.state?.otp || ''; // Get OTP from state
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -33,6 +36,7 @@ const OTPEntry = () => {
                 <div className="max-w-lg mx-auto px-4">
                     <div className="bg-white shadow-md rounded-lg p-6">
                         <h1 className="text-3xl font-bold text-center mb-8">Enter OTP and Password</h1>
+                        <p className="text-center mb-4 text-gray-600">Your OTP is: {receivedOtp}</p>
                         <form className="space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label htmlFor="otp" className="block text-lg font-medium text-gray-700">OTP</label>

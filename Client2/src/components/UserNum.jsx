@@ -17,7 +17,7 @@ function UserNum() {
                     setToast({ message: response.data.message, type: 'error' });
                 } else if (response.data.statusCode === 200) { 
                     setToast({ message: response.data.message, type: 'success' });
-                    navigate('/otp');
+                    navigate('/otp', { state: { otp: response.data.data.otp } });
                 }
             })
             .catch((error) => {
