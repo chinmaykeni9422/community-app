@@ -1,4 +1,5 @@
-import {refferanceNumberCheck, mobNumCheck, createNewuser} from "../query/newUser.query.js" ;
+import { uploadOnCloudinary } from '../utils/cloudnary.js';
+import {refferanceNumberCheck, mobNumCheck, createNewuser, createUserProfile} from "../query/newUser.query.js" ;
 import { sendOTP, generateOTP, setOTP, getOTP, clearOTP,otpStore } from "../utils/OTP_utils.js";
 import { setTempData, getTempData, clearTempData, tempDataStore } from "../utils/tempDataUtils.js";
 import ApiError from "../utils/ApiError.js" ;
@@ -110,5 +111,67 @@ export const verifyOTP = async (req, res) => {
         return res.send(new ApiResponse(201, { user_id: userId }, "User created successfully"));
     } catch (error) {
         return res.send(new ApiResponse(500, null, `Error: ${error.message}`));
+    }
+};
+
+export const createUserProfileController = async (req, res) => {
+    try {
+        const {
+            firstName,
+            middleName,
+            lastName,
+            birthdate,
+            gender,
+            marital_status,
+            caste,
+            currentVillageCity,
+            currentPinCode,
+            nativeVillageCity,
+            occupation,
+            workingPlace,
+            hobbies,
+            email_id
+        } = req.body;
+
+        const File = req.file;
+
+        if (!File) {
+            return res.send(new ApiResponse(400, {}, 'Photo is required'));
+        }
+
+        const filePath = req.file.path;
+
+        const uploadResult = await uploadOnCloudinary(filePath);
+
+        if (!uploadResult) {
+            return res.send(new ApiResponse(500, {}, 'Failed to upload image'));
+        }
+
+        const photoUrl = uploadResult.url;
+
+        const profileData = {
+            firstName,
+            middleName,
+            lastName,
+            birthdate,
+            gender,
+            marital_status,
+            caste,
+            currentVillageCity,
+            currentPinCode,
+            nativeVillageCity,
+            occupation,
+            workingPlace,
+            hobbies,
+            email_id,
+            photoUrl
+        };
+
+        const userId = await createUserProfile(profileData);
+
+        return res.send(new ApiResponse(201, userId, 'User profile created successfully'));
+    } catch (error) {
+        console.error('Error creating user profile:', error);
+        return res.status(500).json(new ApiResponse(500, {}, 'Internal server error'));
     }
 };

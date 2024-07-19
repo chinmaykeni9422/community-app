@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import axios from "axios" ;
+import { useNavigate } from 'react-router-dom';
 
 const UserProfilePage = () => {
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         caste: '',
         currentVillageCity: '',
@@ -35,18 +40,37 @@ const UserProfilePage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission here, including file upload if applicable
-        console.log(formData);
-        // Example: Send formData to backend API for storage
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    
+        const data = new FormData();
+        Object.keys(formData).forEach(key => {
+            data.append(key, formData[key]);
+        });
+    
+        axios.post('/api/newuser/create-profile', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+            if (response.data.statusCode === 400) {
+                console.log(response.data.message);
+            } else if (response.data.statusCode === 201) {
+                navigate('/welcome');
+            }
+        })
+        .catch((error) => {
+            console.error('Error occurred:', error.message);
+        });
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="max-w-4xl w-full bg-white shadow-md rounded-lg p-8">
                 <h1 className="text-3xl font-bold text-center mb-8">User Profile</h1>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6" encType='multipart/form-data'>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {/* Left Column */}
                         <div className="col-span-1">

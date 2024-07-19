@@ -15,7 +15,9 @@ const app = express();
 // }));
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json()) ;
+app.use(express.static("public")) ;
 
 // Routes
 import newUserRoutes from "./routes/newUser.routes.js";

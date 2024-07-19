@@ -21,3 +21,50 @@ export const createNewuser = async (userNum, password, refMobileNum) => {
     );
     return result.insertId;
 };
+
+export const createUserProfile = async (profileData) => {
+    const {
+        firstName,
+        middleName,
+        lastName,
+        birthdate,
+        gender,
+        marital_status,
+        caste,
+        currentVillageCity,
+        currentPinCode,
+        nativeVillageCity,
+        occupation,
+        workingPlace,
+        hobbies,
+        email_id,
+        photoUrl // Assuming you store the URL after uploading to Cloudinary
+    } = profileData;
+
+    const [result] = await pool.query(
+        `INSERT INTO userprofile   
+        (first_name, middle_name, last_name, birthdate, gender, marital_status, caste, 
+         current_village_city, current_pin_code, native_village_city, occupation, 
+         working_place, hobbies,  email_id, photo_url) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            firstName,
+            middleName,
+            lastName,
+            birthdate,
+            gender,
+            marital_status,
+            caste,
+            currentVillageCity,
+            currentPinCode,
+            nativeVillageCity,
+            occupation,
+            workingPlace,
+            hobbies,
+            email_id,
+            photoUrl
+        ]
+    );
+
+    return result.insertId;
+};
