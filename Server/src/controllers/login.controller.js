@@ -1,4 +1,4 @@
-import { mobNumCheck } from "../query/newUser.query.js";
+import { mobNumCheck, checkUserProfile } from "../query/newUser.query.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
@@ -32,8 +32,14 @@ export const checkUserLogin = async (req, res) => {
             return res.send(new ApiResponse(400, null, "Incorrect password"));
         }
 
-        // Password is correct, proceed to login
-        return res.send(new ApiResponse(200, { user_id: user[0].user_id }, "Login successful"));
+        // Check if user profile is completed
+        const userProfile = await checkUserProfile(user[0].user_id);
+
+        if (userProfile.length === 0) {
+            return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/profile' }, "Profile incomplete, please complete your profile"));
+        } else {
+            return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/welcome' }, "Login successful"));
+        }
     } catch (error) {
         throw new ApiError(500, `Error: ${error.message}`);
     }

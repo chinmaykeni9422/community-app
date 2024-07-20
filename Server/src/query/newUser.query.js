@@ -90,3 +90,10 @@ export const getEnumValues = async (columnName) => {
 
     return [];
 };
+
+export const checkUserProfile = async (userId) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM userprofile WHERE user_id = ?', [userId]
+    );
+    return rows;
+};

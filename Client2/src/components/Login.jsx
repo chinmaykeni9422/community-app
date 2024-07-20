@@ -18,7 +18,7 @@ const Login = () => {
                     setToast({ message: response.data.message, type: 'error' });
                 } else if (response.data.statusCode === 200) { // Assuming 200 for successful login
                     setToast({ message: response.data.message, type: 'success' });
-                    navigate('/welcome');
+                    navigate(response.data.data.redirectTo); // Navigate based on the redirectTo field
                 }
             })
             .catch((error) => {
