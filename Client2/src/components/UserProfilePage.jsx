@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios" ;
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const UserProfilePage = () => {
 
     const navigate = useNavigate();
+    const location = useLocation(); 
+    const user_id = location.state?.user_id ; // Get user_id from state
 
     const [formData, setFormData] = useState({
         caste: '',
@@ -16,13 +18,32 @@ const UserProfilePage = () => {
         lastName: '',
         birthdate: '',
         gender: '',
-        maritalStatus: '',
+        marital_status: '',
         occupation: '',
         workingPlace: '',
         hobbies: '',
-        email: '',
+        email_id: '',
         photo: null // For handling file upload
     });
+
+    const [enumValues, setEnumValues] = useState({
+        gender: [],
+        maritalStatus: [],
+        occupation: [],
+        caste: [],
+        nativeVillageCity: [],
+        currentVillageCity: []
+    });
+
+    const fetchEnumValues = async (columnName) => {
+        try {
+            const response = await axios.get(`/api/newuser/enums/${columnName}`);
+            return response.data.data || [];
+        } catch (error) {
+            console.error(`Error fetching ${columnName} values:`, error);
+            return [];
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -44,6 +65,7 @@ const UserProfilePage = () => {
         event.preventDefault();
     
         const data = new FormData();
+        data.append('user_id', user_id);
         Object.keys(formData).forEach(key => {
             data.append(key, formData[key]);
         });
@@ -65,6 +87,21 @@ const UserProfilePage = () => {
             console.error('Error occurred:', error.message);
         });
     };
+
+    useEffect(() => {
+        const loadEnumValues = async () => {
+            setEnumValues({
+                gender: await fetchEnumValues('gender'),
+                maritalStatus: await fetchEnumValues('marital_status'),
+                occupation: await fetchEnumValues('occupation'),
+                caste: await fetchEnumValues('caste'),
+                nativeVillageCity: await fetchEnumValues('native_village_city'),
+                currentVillageCity: await fetchEnumValues('current_village_city')
+            });
+        };
+
+        loadEnumValues();
+    }, []);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -145,27 +182,31 @@ const UserProfilePage = () => {
                                 required
                             >
                                 <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
+                                {enumValues.gender.map((option) => (
+                                    <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="col-span-1">
-                            <label htmlFor="maritalStatus" className="block text-lg font-medium text-gray-700 ">
+                            <label htmlFor="marital_status" className="block text-lg font-medium text-gray-700 ">
                                 Marital Status <span className="text-red-500">*</span>
                             </label>
                             <select
-                                id="maritalStatus"
-                                name="maritalStatus"
-                                value={formData.maritalStatus}
+                                id="marital_status"
+                                name="marital_status"
+                                value={formData.marital_status}
                                 onChange={handleChange}
                                 required
                                 className="p-1 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                             >
                                 <option value="">Select Marital Status</option>
-                                <option value="married">Married</option>
-                                <option value="unmarried">Unmarried</option>
-                                <option value="divorced">Divorced</option>
+                                {enumValues.maritalStatus.map((option) => (
+                                    <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         {/* Right Column */}
@@ -182,8 +223,11 @@ const UserProfilePage = () => {
                                 className="p-1 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                             >
                                 <option value="">Select Caste</option>
-                                <option value="aagri">Aagri</option>
-                                <option value="koli">Koli</option>
+                                {enumValues.caste.map((option) => (
+                                    <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="col-span-1">
@@ -199,10 +243,11 @@ const UserProfilePage = () => {
                                 className="p-1 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                             >
                                 <option value="">Select Current Village/City</option>
-                                <option value="virar">Virar</option>
-                                <option value="arnala">Arnala</option>
-                                <option value="dandi">Dandi</option>
-                                {/* Add other options from database dynamically */}
+                                {enumValues.currentVillageCity.map((option) => (
+                                    <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="col-span-1">
@@ -233,10 +278,11 @@ const UserProfilePage = () => {
                                 className="p-1 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                             >
                                 <option value="">Select Native Village/City</option>
-                                <option value="virar">Virar</option>
-                                <option value="arnala">Arnala</option>
-                                <option value="dandi">Dandi</option>
-                                {/* Add other options from database dynamically */}
+                                {enumValues.nativeVillageCity.map((option) => (
+                                    <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="col-span-1">
@@ -252,11 +298,11 @@ const UserProfilePage = () => {
                                 className="p-1 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                             >
                                 <option value="">Select Occupation</option>
-                                <option value="student">Student</option>
-                                <option value="service">Service</option>
-                                <option value="business">Business</option>
-                                <option value="entrepreneur">Entrepreneur</option>
-                                <option value="profession">Profession</option>
+                                {enumValues.occupation.map((option) => (
+                                    <option key={option} value={option.toLowerCase()}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className="col-span-1">
@@ -289,14 +335,14 @@ const UserProfilePage = () => {
                             />
                         </div>
                         <div className="col-span-1">
-                            <label htmlFor="email" className="block text-lg font-medium text-gray-700">
+                            <label htmlFor="email_id" className="block text-lg font-medium text-gray-700">
                                 Email ID
                             </label>
                             <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                value={formData.email}
+                                id="email_id"
+                                name="email_id"
+                                type="email_id"
+                                value={formData.email_id}
                                 onChange={handleChange}
                                 className="p-1 border w-full border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                                 placeholder="Enter Email ID"

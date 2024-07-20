@@ -21,7 +21,7 @@ const OTPEntry = () => {
                     setToast({ message: response.data.message, type: 'error' });
                 } else if (response.data.statusCode === 201) { // Assuming 201 is used for successful user creation
                     setToast({ message: response.data.message, type: 'success' });
-                    navigate('/welcome');
+                    navigate('/profile' ,{ state: { user_id: response.data.data.user_id }});
                 }
             })
             .catch((error) => {

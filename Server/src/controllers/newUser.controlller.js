@@ -1,5 +1,5 @@
 import { uploadOnCloudinary } from '../utils/cloudnary.js';
-import {refferanceNumberCheck, mobNumCheck, createNewuser, createUserProfile} from "../query/newUser.query.js" ;
+import {refferanceNumberCheck, mobNumCheck, createNewuser, createUserProfile, getEnumValues} from "../query/newUser.query.js" ;
 import { sendOTP, generateOTP, setOTP, getOTP, clearOTP,otpStore } from "../utils/OTP_utils.js";
 import { setTempData, getTempData, clearTempData, tempDataStore } from "../utils/tempDataUtils.js";
 import ApiError from "../utils/ApiError.js" ;
@@ -117,6 +117,7 @@ export const verifyOTP = async (req, res) => {
 export const createUserProfileController = async (req, res) => {
     try {
         const {
+            user_id,
             firstName,
             middleName,
             lastName,
@@ -150,6 +151,7 @@ export const createUserProfileController = async (req, res) => {
         const photoUrl = uploadResult.url;
 
         const profileData = {
+            user_id,
             firstName,
             middleName,
             lastName,
@@ -173,5 +175,21 @@ export const createUserProfileController = async (req, res) => {
     } catch (error) {
         console.error('Error creating user profile:', error);
         return res.status(500).json(new ApiResponse(500, {}, 'Internal server error'));
+    }
+};
+
+export const fetchEnumValues = async (req, res) => {
+    const { columnName } = req.params;
+
+    try {
+        const values = await getEnumValues(columnName);
+
+        if (values.length > 0) {
+            return res.send(new ApiResponse(200, values, 'Enum values fetched successfully'));
+        } else {
+            return res.send(new ApiResponse(404, null, 'No enum values found'));
+        }
+    } catch (error) {
+        return res.send(new ApiResponse(500, null, `Error: ${error.message}`));
     }
 };

@@ -24,6 +24,7 @@ export const createNewuser = async (userNum, password, refMobileNum) => {
 
 export const createUserProfile = async (profileData) => {
     const {
+        user_id,
         firstName,
         middleName,
         lastName,
@@ -43,11 +44,12 @@ export const createUserProfile = async (profileData) => {
 
     const [result] = await pool.query(
         `INSERT INTO userprofile   
-        (first_name, middle_name, last_name, birthdate, gender, marital_status, caste, 
+        (user_id, first_name, middle_name, last_name, birthdate, gender, marital_status, caste, 
          current_village_city, current_pin_code, native_village_city, occupation, 
          working_place, hobbies,  email_id, photo_url) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
+            user_id,
             firstName,
             middleName,
             lastName,
@@ -67,4 +69,24 @@ export const createUserProfile = async (profileData) => {
     );
 
     return result.insertId;
+};
+
+export const getEnumValues = async (columnName) => {
+    const [rows] = await pool.query(
+        `SELECT COLUMN_TYPE 
+         FROM INFORMATION_SCHEMA.COLUMNS 
+         WHERE TABLE_NAME = 'userprofile' AND COLUMN_NAME = ?`,
+        [columnName]
+    );
+    
+    if (rows.length > 0) {
+        const enumString = rows[0].COLUMN_TYPE;
+        return enumString
+            .replace('enum(', '')
+            .replace(')', '')
+            .split(',')
+            .map(value => value.replace(/'/g, ''));
+    }
+
+    return [];
 };

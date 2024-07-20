@@ -6,3 +6,25 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- direct copy paste nako karu 
+CREATE TABLE UserProfile (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    caste VARCHAR(50),
+    current_village_city VARCHAR(100),
+    current_pin_code VARCHAR(10),
+    native_village_city VARCHAR(100),
+    first_name VARCHAR(50),
+    middle_name VARCHAR(50),
+    last_name VARCHAR(50),
+    birthdate DATE,
+    gender ENUM('Male', 'Female', 'Transgender'),
+    marital_status ENUM('Married', 'Un-married', 'Divorcee'),
+    occupation ENUM('Student', 'Service', 'Business', 'Entrepreneur', 'Profession'),
+    working_place VARCHAR(255),
+    hobbies TEXT,
+    email_id VARCHAR(100),
+    photo_url VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
