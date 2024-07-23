@@ -1,18 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import cors from "cors";
+import {Protect} from "./middlewares/auth.middleware.js"
 
 dotenv.config({
     path: "./.env",
 });
 
 const app = express();
-
-// app.use(cors({
-//     origin: process.env.CORS_ORIGIN,
-//     credentials: true,
-// }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,8 +21,8 @@ import existedUserRoutes from "./routes/existedUser.routes.js";
 app.use("/api/newuser", newUserRoutes);
 app.use("/api/existedUser", existedUserRoutes);
 
-app.get('/api/jokes', (req,res) => (
-    res.send([{id:1, joke:"joke1"},{id:2, joke:"joke2"},{id:3, joke:"joke3"}])
+app.get('/api/protected', Protect,(req,res) => (
+    res.send("hello from protected route") 
 ))
 
 export default app;

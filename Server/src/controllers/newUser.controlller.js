@@ -4,6 +4,7 @@ import { sendOTP, generateOTP, setOTP, getOTP, clearOTP,otpStore } from "../util
 import { setTempData, getTempData, clearTempData, tempDataStore } from "../utils/tempDataUtils.js";
 import ApiError from "../utils/ApiError.js" ;
 import ApiResponse from "../utils/ApiResponse.js" ;
+import { generateToken } from '../utils/generateToken.js';
 
 export const checkRefNum = async (req, res) => {
     const { reference_mobile_number } = req.body;
@@ -108,7 +109,10 @@ export const verifyOTP = async (req, res) => {
         clearTempData("reference_mobile_number");
         clearTempData("user_mobile_number");
 
-        return res.send(new ApiResponse(201, { user_id: userId }, "User created successfully"));
+        // Generate token
+        const token = generateToken({ user_id: userId, mobile_number });
+
+        return res.send(new ApiResponse(201, { user_id: userId, token }, "User created successfully"));
     } catch (error) {
         return res.send(new ApiResponse(500, null, `Error: ${error.message}`));
     }

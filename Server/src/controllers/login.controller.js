@@ -1,6 +1,7 @@
 import { mobNumCheck, checkUserProfile } from "../query/newUser.query.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import {generateToken} from '../utils/generateToken.js'
 
 const verifyPassword = (password, UserPassword) => {
     if(password != UserPassword){
@@ -35,10 +36,12 @@ export const checkUserLogin = async (req, res) => {
         // Check if user profile is completed
         const userProfile = await checkUserProfile(user[0].user_id);
 
+        const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
+
         if (userProfile.length === 0) {
-            return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/profile' }, "Profile incomplete, please complete your profile"));
+            return res.send(new ApiResponse(200, { user_id: user[0].user_id, token, redirectTo: '/profile' }, "Profile incomplete, please complete your profile"));
         } else {
-            return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/home' }, "Login successful"));
+            return res.send(new ApiResponse(200, { user_id: user[0].user_id, token, redirectTo: '/home' }, "Login successful"));
         }
     } catch (error) {
         throw new ApiError(500, `Error: ${error.message}`);
