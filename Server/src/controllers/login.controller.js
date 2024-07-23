@@ -38,7 +38,7 @@ export const checkUserLogin = async (req, res) => {
         if (userProfile.length === 0) {
             return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/profile' }, "Profile incomplete, please complete your profile"));
         } else {
-            return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/welcome' }, "Login successful"));
+            return res.send(new ApiResponse(200, { user_id: user[0].user_id, redirectTo: '/home' }, "Login successful"));
         }
     } catch (error) {
         throw new ApiError(500, `Error: ${error.message}`);

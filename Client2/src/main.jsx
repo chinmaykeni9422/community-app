@@ -8,10 +8,10 @@ import RefNum from './components/RefNum.jsx';
 import Login from './components/Login.jsx';
 import UserNum from './components/UserNum.jsx';
 import OTPEntry from './components/OTPEntry.jsx';
-import Welcome from './components/Welcome.jsx';
 import UserProfilePage from './components/UserProfilePage.jsx';
 import Home from './components/Home.jsx';
-import ProfilePage from './components/Profile.jsx';
+import Profile from './components/Profile.jsx';
+import AddNumber from './components/AddNumber.jsx'
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -24,10 +24,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="login" element={<Login />} />
           <Route path="userNum" element={<UserNum />} />
           <Route path="otp" element={<OTPEntry />} />
-          <Route path="welcome" element={<Welcome />} />
           <Route path="profile" element={<UserProfilePage />} />
           <Route path="home" element={<Home />} />
-          <Route path="profilepage" element={<ProfilePage />} />
+          <Route path="profilepage" element={<Profile />} />
+          <Route path="addnumber" element={<AddNumber />} />
         </Route>
       </Routes>
     </Router>

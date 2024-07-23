@@ -80,7 +80,7 @@ const UserProfilePage = () => {
             if (response.data.statusCode === 400) {
                 console.log(response.data.message);
             } else if (response.data.statusCode === 201) {
-                navigate('/welcome');
+                navigate('/home');
             }
         })
         .catch((error) => {
