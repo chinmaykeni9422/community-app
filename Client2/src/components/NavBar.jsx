@@ -5,7 +5,7 @@ const Navbar = ({ sideBarTogggle, setSideBarToggle }) => {
 
     return (
         <>
-            <nav className={`bg-gray-800 ${sideBarTogggle ? "" : "ml-64"} px-4 py-3 flex inline justify-between`}>
+            <nav className={`bg-gray-800 ${sideBarTogggle ? "" : "ml-64"} px-4 py-3 flex justify-between`}>
 
                 <div className='flex items-center text-xl'>
                     <FaBars
@@ -24,7 +24,7 @@ const Navbar = ({ sideBarTogggle, setSideBarToggle }) => {
 
                     <div className='relative'>
                         <button className='text-white group'>
-                            <FaUserCircle className='w-6 h-6 mt-1' />
+                            <FaUserCircle className='w-10 h-10 mt-1' />
                             <div className='z-10 hidden absolute bg-white rounded-lg shadow w-48 group-focus:block top-full right-0'>
                                 <ul className="p-3 text-sm text-gray-950">
                                     <li>
