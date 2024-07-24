@@ -50,8 +50,8 @@ export const checkUserMobNum = async (req, res) => {
 
         const user = await mobNumCheck(mobile_number);
 
-        if (user.length > 0) {
-            return res.send(new ApiResponse(400, null, "Mobile number already exists"));
+        if (user.length === 0) {
+            return res.send(new ApiResponse(400, null, "Mobile number not exists"));
         }
 
         // Generate OTP
@@ -91,9 +91,6 @@ export const verifyOTP = async (req, res) => {
             return res.send(new ApiResponse(400, null, "All fields are required"));
         }
 
-        // Retrieve reference mobile number from temporary storage
-        const reference_mobile_number = await getTempData("reference_mobile_number");
-
         // Check OTP
         const storedOtp = getOTP("otp");
 
@@ -102,17 +99,13 @@ export const verifyOTP = async (req, res) => {
         }
 
         // Create user
-        const userId = await createNewuser(mobile_number, password, reference_mobile_number);
+        const userId = await createNewuser(mobile_number, password);
 
         // Clear OTP and temporary data
         clearOTP(mobile_number);
-        clearTempData("reference_mobile_number");
         clearTempData("user_mobile_number");
 
-        // Generate token
-        const token = generateToken({ user_id: userId, mobile_number });
-
-        return res.send(new ApiResponse(201, { user_id: userId, token }, "User created successfully"));
+        return res.send(new ApiResponse(201, { user_id: userId}, "User created successfully"));
     } catch (error) {
         return res.send(new ApiResponse(500, null, `Error: ${error.message}`));
     }

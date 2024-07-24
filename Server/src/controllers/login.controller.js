@@ -1,4 +1,4 @@
-import { mobNumCheck, checkUserProfile } from "../query/newUser.query.js";
+import { mobNumCheck, checkUserProfile, addMobNum, mobNumCheck2 } from "../query/newUser.query.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import {generateToken} from '../utils/generateToken.js'
@@ -16,11 +16,11 @@ export const checkUserLogin = async (req, res) => {
 
     try {
         if (!mobile_number || !password) {
-            return res.send(new ApiResponse(400, null, "Mobile number and password are required"));
+            return res.send(new ApiResponse(400, null, "Mobile number or password is missing"));
         }
 
         // Check if the user with the given mobile number exists
-        const user = await mobNumCheck(mobile_number);
+        const user = await mobNumCheck2(mobile_number);
 
         if (user.length === 0) {
             return res.send(new ApiResponse(400, null, "User not found"));
@@ -51,3 +51,35 @@ export const checkUserLogin = async (req, res) => {
         throw new ApiError(500, `Error: ${error.message}`);
     }
 };
+
+export const addUserNumber = async (req, res) => {
+    const {mobile_number, user_id} = req.body ;
+
+    try {
+        if (!mobile_number || !user_id) {
+            return res.send(new ApiResponse(400, null, "Mobile number or user_id is missing"));
+        }
+
+        const result = await mobNumCheck(mobile_number);
+
+        if (result.length > 0) {
+            return res.send(new ApiResponse(400, null, "Mobile number alredy exists"));
+        }
+
+        const result2 = await mobNumCheck2(mobile_number);
+
+        if (result2.length > 0) {
+            return res.send(new ApiResponse(400, null, "Registered mobile number"));
+        }
+
+        const user = await addMobNum(user_id, mobile_number)
+
+        if (user.length === 0) {
+            return res.send(new ApiResponse(400, null, "mobile number was not added"));
+        }
+
+        return res.send(new ApiResponse(200, {}, "Mobile number added successfully"));
+    } catch (error) {
+        throw new ApiError(500, `Error: ${error.message}`);
+    }
+}

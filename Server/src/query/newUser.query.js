@@ -9,15 +9,22 @@ export const refferanceNumberCheck = async (refNumber) => {
 
 export const mobNumCheck = async (mobNum) => {
     const [rows] = await pool.query(
+        'SELECT * FROM user_numbers WHERE mobile_number = ?', [mobNum]
+    );
+    return rows;
+};
+
+export const mobNumCheck2 = async (mobNum) => {
+    const [rows] = await pool.query(
         'SELECT * FROM users WHERE mobile_number = ?', [mobNum]
     );
     return rows;
 };
 
-export const createNewuser = async (userNum, password, refMobileNum) => {
+export const createNewuser = async (userNum, password) => {
     const [result] = await pool.query(
-        'INSERT INTO users (mobile_number, password, reference_mobile_number) VALUES (?, ?, ?)',
-        [userNum, password, refMobileNum]
+        'INSERT INTO users (mobile_number, password) VALUES (?, ?)',
+        [userNum, password]
     );
     return result.insertId;
 };
@@ -97,3 +104,10 @@ export const checkUserProfile = async (userId) => {
     );
     return rows;
 };
+
+export const addMobNum = async (userId, mobilenum) => {
+    const [rows] = await pool.query(
+        'INSERT INTO user_numbers (user_id, mobile_number) VALUES (?, ?)' , [userId, mobilenum]
+    )
+    return rows ;
+}

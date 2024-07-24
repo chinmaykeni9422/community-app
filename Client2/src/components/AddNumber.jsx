@@ -1,18 +1,34 @@
 import React, { useState } from 'react';
+import axios from 'axios' ;
+import {UserState} from '../Context/userContext'
 
 const AddNumber = () => {
-    const [mobileNumber, setMobileNumber] = useState('');
+
+    const {user} = UserState() ;
+
+    const [mobile_number, setMobileNumber] = useState('');
     const [toast, setToast] = useState({ message: '', type: '' });
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!mobileNumber) {
-            setToast({ message: 'Please enter a mobile number.', type: 'error' });
-            return;
-        }
-        // Add your submit logic here
-        setToast({ message: 'Mobile number added successfully!', type: 'success' });
-        setMobileNumber(''); // Clear the input after submission
+
+        const user_id = user?.profile?.user_id;
+        
+        axios.post('/api/existedUser/addNumber', {
+            mobile_number: mobile_number,
+            user_id: user_id,
+          })
+            .then((response) => {
+              if (response.data.statusCode === 200) {
+                setToast({ message: response.data.message, type: 'success' });
+              } else {
+                setToast({ message: response.data.message, type: 'error' });
+              }
+              setMobileNumber('')
+            })
+            .catch(() => {
+              setToast({ message: 'An error occurred. Please try again.', type: 'error' });
+            });
     };
 
     return (
@@ -30,7 +46,7 @@ const AddNumber = () => {
                         <input
                             id="mobile_number"
                             type="text"
-                            value={mobileNumber}
+                            value={mobile_number}
                             onChange={(e) => setMobileNumber(e.target.value)}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
                             placeholder="Enter your mobile number"

@@ -8,7 +8,7 @@ function App() {
   const navigate = useNavigate();
 
   const handleJoinClick = () => {
-    navigate('/refNum');
+    navigate('/userNum');
   };
 
   return (

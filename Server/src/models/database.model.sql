@@ -26,5 +26,12 @@ CREATE TABLE UserProfile (
     hobbies TEXT,
     email_id VARCHAR(100),
     photo_url VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES User(id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE user_numbers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    mobile_number VARCHAR(20) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) -- Assuming 'users' is your user table
 );
