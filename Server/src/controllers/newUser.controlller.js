@@ -152,9 +152,9 @@ export const createUserProfileController = async (req, res) => {
             return res.send(new ApiResponse(500, {}, 'Failed to upload image'));
         }
 
-        const photoUrl = uploadResult.url;
+        const photo_url = uploadResult.url;
 
-        const profileData = {
+        const profile = {
             user_id,
             firstName,
             middleName,
@@ -170,12 +170,15 @@ export const createUserProfileController = async (req, res) => {
             workingPlace,
             hobbies,
             email_id,
-            photoUrl
+            photo_url
         };
 
-        const userId = await createUserProfile(profileData);
+        const userId = await createUserProfile(profile);
 
-        return res.send(new ApiResponse(201, userId, 'User profile created successfully'));
+        // Generate token
+        const token = generateToken({ user_id: userId, email_id });
+
+        return res.send(new ApiResponse(201, {userId, profile, token}, 'User profile created successfully'));
     } catch (error) {
         console.error('Error creating user profile:', error);
         return res.status(500).json(new ApiResponse(500, {}, 'Internal server error'));

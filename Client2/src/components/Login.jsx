@@ -13,11 +13,15 @@ const Login = () => {
 
         axios.post('/api/existedUser/login', { mobile_number, password })
             .then((response) => {
-                console.log(response.data)
                 if (response.data.statusCode === 400) { // Assuming 401 for wrong credentials
                     setToast({ message: response.data.message, type: 'error' });
                 } else if (response.data.statusCode === 200) { // Assuming 200 for successful login
                     setToast({ message: response.data.message, type: 'success' });
+                    const { token, profile } = response.data.data;
+
+                    // Store user data and token in localStorage
+                    localStorage.setItem('userInfo', JSON.stringify({ token, profile }));
+
                     navigate(response.data.data.redirectTo); // Navigate based on the redirectTo field
                 }
             })

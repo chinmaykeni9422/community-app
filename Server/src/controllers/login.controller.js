@@ -38,11 +38,15 @@ export const checkUserLogin = async (req, res) => {
 
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
-        if (userProfile.length === 0) {
-            return res.send(new ApiResponse(200, { user_id: user[0].user_id, token, redirectTo: '/profile' }, "Profile incomplete, please complete your profile"));
-        } else {
-            return res.send(new ApiResponse(200, { user_id: user[0].user_id, token, redirectTo: '/home' }, "Login successful"));
-        }
+        // Prepare the response data
+        const responseData = {
+            user_id: user[0].user_id,
+            token,
+            profile: userProfile.length > 0 ? userProfile[0] : null, // Include profile data if exists
+            redirectTo: userProfile.length === 0 ? '/profile' : '/home' // Redirect based on profile completion
+        };
+
+        return res.send(new ApiResponse(200, responseData, "Login successful"));
     } catch (error) {
         throw new ApiError(500, `Error: ${error.message}`);
     }

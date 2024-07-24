@@ -39,7 +39,7 @@ export const createUserProfile = async (profileData) => {
         workingPlace,
         hobbies,
         email_id,
-        photoUrl // Assuming you store the URL after uploading to Cloudinary
+        photo_url // Assuming you store the URL after uploading to Cloudinary
     } = profileData;
 
     const [result] = await pool.query(
@@ -64,7 +64,7 @@ export const createUserProfile = async (profileData) => {
             workingPlace,
             hobbies,
             email_id,
-            photoUrl
+            photo_url
         ]
     );
 

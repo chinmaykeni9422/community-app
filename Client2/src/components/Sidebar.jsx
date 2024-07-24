@@ -10,7 +10,7 @@ const Sidebar = ({sideBarTogggle, setActiveComponent, activeComponent}) => {
     <>
         <div className={`${sideBarTogggle? "hidden" : "block"} w-64 bg-gray-800 fixed h-full px-4 py-2`}>
             
-            <div className='my-6 mb-4'>
+            <div className='my-9 mb-4'>
                 <h1 className='text-2x text-white font-bold'>BrandLogo</h1>
             </div>
             <hr />

@@ -80,6 +80,12 @@ const UserProfilePage = () => {
             if (response.data.statusCode === 400) {
                 console.log(response.data.message);
             } else if (response.data.statusCode === 201) {
+                // Extract profile data and token
+                const { profile, token } = response.data.data;
+
+                // Store user data and token in localStorage
+                localStorage.setItem('userInfo', JSON.stringify({ token, profile }));
+
                 navigate('/home');
             }
         })
