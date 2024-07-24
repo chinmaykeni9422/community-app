@@ -1,6 +1,5 @@
 import React from 'react'
 import {FaUser, FaMobile, FaRegEnvelope} from 'react-icons/fa' 
-import {Link} from "react-router-dom"
 
 const Sidebar = ({sideBarTogggle, setActiveComponent, activeComponent}) => {
 
