@@ -1,5 +1,5 @@
 import { uploadOnCloudinary } from '../utils/cloudnary.js';
-import {refferanceNumberCheck, mobNumCheck, createNewuser, createUserProfile, getEnumValues} from "../query/newUser.query.js" ;
+import {refferanceNumberCheck, mobNumCheck, createNewuser, createUserProfile, getEnumValues, mobNumCheck2} from "../query/newUser.query.js" ;
 import { sendOTP, generateOTP, setOTP, getOTP, clearOTP,otpStore } from "../utils/OTP_utils.js";
 import { setTempData, getTempData, clearTempData, tempDataStore } from "../utils/tempDataUtils.js";
 import ApiError from "../utils/ApiError.js" ;
@@ -52,6 +52,12 @@ export const checkUserMobNum = async (req, res) => {
 
         if (user.length === 0) {
             return res.send(new ApiResponse(400, null, "Mobile number not exists"));
+        }
+
+        const user1 = await mobNumCheck2(mobile_number);
+
+        if (user1.length > 0) {
+            return res.send(new ApiResponse(400, null, "Mobile number alredy registered"));
         }
 
         // Generate OTP

@@ -40,18 +40,19 @@ const HomePage = () => {
         <>
             <div>
                 <div>
-                    <Sidebar
-                        sideBarTogggle={sideBarTogggle} 
-                        setActiveComponent={setActiveComponent}
-                        activeComponent={activeComponent}
-                    />
-                </div>
-                <div>
                     <Navbar
                             sideBarTogggle={sideBarTogggle}
                             setSideBarToggle={setSideBarToggle}
                     />
-                    <div className={`${sideBarTogggle ? "" : "ml-64"}`}>
+                </div>
+                <div>
+                    <Sidebar
+                        sideBarTogggle={sideBarTogggle} 
+                        setActiveComponent={setActiveComponent}
+                        activeComponent={activeComponent}
+                        setSideBarToggle={setSideBarToggle}
+                    />
+                    <div>
                         {renderComponent()}
                     </div>
                 </div>

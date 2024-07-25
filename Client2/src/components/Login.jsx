@@ -39,10 +39,14 @@ const Login = () => {
 
     return (
         <>
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="flex items-center justify-center min-h-screen bg-blue-600">
+
                 <div className="max-w-lg mx-auto px-4">
+
                     <div className="bg-white shadow-md rounded-lg p-6">
+
                         <h1 className="text-3xl font-bold text-center mb-8">Login</h1>
+                        
                         <form className="space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label htmlFor="mobile_number" className="block text-lg font-medium text-gray-700">Mobile Number</label>
@@ -75,13 +79,17 @@ const Login = () => {
                                 </button>
                             </div>
                         </form>
+                        
                         {toast.message && (
                             <div className={`mt-4 p-4 rounded-md ${toast.type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
                                 {toast.message}
                             </div>
                         )}
+
                     </div>
+
                 </div>
+
             </div>
         </>
     );

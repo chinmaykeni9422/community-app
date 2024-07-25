@@ -33,9 +33,9 @@ const AddNumber = () => {
 
     return (
 
-        <div className="flex flex-col items-center justify-center h-[865px] bg-gray-300 p-4">
+        <div className="flex flex-col p-4 items-center h-[600px] justify-center md:h-[865px] bg-whitep-4">
 
-            <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+            <div className="bg-white border-solid border-2 border-black shadow-md rounded-lg p-8 max-w-md w-full">
 
                 <h1 className="text-2xl font-bold text-center mb-6">Add Mobile Number</h1>
 

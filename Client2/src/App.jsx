@@ -13,11 +13,11 @@ function App() {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-blue-600">
 
         <div className="max-w-4xl mx-auto px-4">
 
-          <div className="bg-white shadow-md rounded-lg p-6">
+          <div className="bg-gray-100 shadow-md rounded-lg p-6">
 
             <h1 className="text-4xl font-bold text-center mb-8">Welcome to Community App</h1>
 
@@ -31,7 +31,7 @@ function App() {
                 </button>
               </div>
 
-              <div className="p-6 bg-gray-200 rounded-lg text-center">
+              <div className="p-6 bg-gray-300 rounded-lg text-center">
                 <h2 className="text-2xl font-bold mb-4">Existing User</h2>
                 <p className="text-lg">Already a member? Log in here.</p>
                 <button onClick={() => navigate('/login')} className="mt-4 bg-blue-500 text-white hover:bg-blue-600 px-6 py-3 rounded-md shadow-md transition-colors duration-300 ease-in-out focus:outline-none">
