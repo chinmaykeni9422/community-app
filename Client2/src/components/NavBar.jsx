@@ -13,9 +13,7 @@ const Navbar = ({ sideBarTogggle, setSideBarToggle }) => {
 
     // log out handler
     const logoutHandler = () => {
-        console.log('Logout button clicked'); // Check if this message appears
         localStorage.removeItem("userInfo");
-        console.log('Redirecting to home page'); // Check if this message appears
         navigate("/"); // Redirect to homepage or login page
     }
 

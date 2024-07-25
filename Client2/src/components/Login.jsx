@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { UserState } from '../Context/userContext';
 
 const Login = () => {
     const [mobile_number, setMobileNumber] = useState('');
     const [password, setPassword] = useState('');
     const [toast, setToast] = useState({ message: '', type: '' });
     const navigate = useNavigate();
+    const { setUser } = UserState();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -20,7 +22,11 @@ const Login = () => {
                     const { token, profile } = response.data.data;
 
                     // Store user data and token in localStorage
-                    localStorage.setItem('userInfo', JSON.stringify({ token, profile }));
+                    const userInfo = { token, profile };
+
+                    // Store user data and token in localStorage
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    setUser(userInfo); // Update context
 
                     navigate(response.data.data.redirectTo); // Navigate based on the redirectTo field
                 }

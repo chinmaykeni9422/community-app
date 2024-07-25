@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, createContext } from "react";
-import { useNavigate } from 'react-router-dom';
+
 
 const userContext = createContext();
 
@@ -7,10 +7,22 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState();
 
     useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        if (userInfo) {
-            setUser(userInfo);
-        }
+        const updateUser = () => {
+            const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+            if (userInfo) {
+                setUser(userInfo);
+            } else {
+                setUser(null);
+            }
+        };
+
+        window.addEventListener("storage", updateUser);
+
+        updateUser();
+
+        return () => {
+            window.removeEventListener("storage", updateUser);
+        };
     }, []);
 
     return (
