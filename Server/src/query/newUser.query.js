@@ -1,12 +1,5 @@
 import {pool} from "../db/database.js" ;
 
-export const refferanceNumberCheck = async (refNumber) => {
-    const [rows] = await pool.query(
-        'SELECT * FROM users WHERE mobile_number = ?', [refNumber] 
-    ) ;
-    return rows ;
-} ;
-
 export const mobNumCheck = async (mobNum) => {
     const [rows] = await pool.query(
         'SELECT * FROM user_numbers WHERE mobile_number = ?', [mobNum]

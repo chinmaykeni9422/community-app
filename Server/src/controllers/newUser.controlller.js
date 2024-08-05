@@ -1,44 +1,9 @@
 import { uploadOnCloudinary } from '../utils/cloudnary.js';
-import {refferanceNumberCheck, mobNumCheck, createNewuser, createUserProfile, getEnumValues, mobNumCheck2} from "../query/newUser.query.js" ;
+import {mobNumCheck, createNewuser, createUserProfile, getEnumValues, mobNumCheck2} from "../query/newUser.query.js" ;
 import { sendOTP, generateOTP, setOTP, getOTP, clearOTP,otpStore } from "../utils/OTP_utils.js";
 import { setTempData, getTempData, clearTempData, tempDataStore } from "../utils/tempDataUtils.js";
-import ApiError from "../utils/ApiError.js" ;
 import ApiResponse from "../utils/ApiResponse.js" ;
 import { generateToken } from '../utils/generateToken.js';
-
-export const checkRefNum = async (req, res) => {
-    const { reference_mobile_number } = req.body;
-
-    if (reference_mobile_number === '') {
-        return res.send(new ApiResponse(404, {}, "Enter reference mobile number"));
-    }
-
-    try {
-        const refUser = await refferanceNumberCheck(reference_mobile_number);
-
-        if (refUser.length === 0) {
-            return res.send(new ApiResponse(404, {}, "Reference User not found"));
-        }
-
-        // Save reference_mobile_number in temporary storage
-        await setTempData("reference_mobile_number", reference_mobile_number);
-
-        const user = refUser[0]; // Access the first user from the array
-
-        return res
-            .status(201)
-            .json(new ApiResponse(201, {
-                user_id: user.user_id,
-                mobile_number: user.mobile_number,
-                reference_mobile_number: user.reference_mobile_number
-            }, "Reference User found"));
-    } catch (error) {
-        console.error('Error occurred:', error);
-        return res
-            .status(500)
-            .json(new ApiError(500, `Error: ${error.message}`));
-    }
-};
 
 export const checkUserMobNum = async (req, res) => {
     const { mobile_number } = req.body;

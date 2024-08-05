@@ -4,6 +4,7 @@ import Navbar from './NavBar';
 import Profile from "./Profile"
 import AddNumber from './AddNumber';
 import Inbox from './Inbox';
+import UserHome from './UserHome';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -21,7 +22,7 @@ const HomePage = () => {
     }, [navigate]);
 
     const [sideBarTogggle, setSideBarToggle] = useState(false);
-    const [activeComponent, setActiveComponent] = useState('profile');
+    const [activeComponent, setActiveComponent] = useState('Home');
 
     const renderComponent = () => {
         switch (activeComponent) {
@@ -31,8 +32,10 @@ const HomePage = () => {
                 return <AddNumber />;
             case 'inbox':
                 return <Inbox />;
+            case 'home':
+                return <UserHome />;
             default:
-                return <Profile />;
+                return <UserHome />;
         }
     };
 

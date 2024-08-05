@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios" ;
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserState } from '../Context/userContext';
 
 const UserProfilePage = () => {
 
     const navigate = useNavigate();
     const location = useLocation(); 
     const user_id = location.state?.user_id ; // Get user_id from state
+    const { setUser } = UserState();
 
     const [formData, setFormData] = useState({
         caste: '',
@@ -80,11 +82,14 @@ const UserProfilePage = () => {
             if (response.data.statusCode === 400) {
                 console.log(response.data.message);
             } else if (response.data.statusCode === 201) {
-                // Extract profile data and token
-                const { profile, token } = response.data.data;
+                const { token, profile } = response.data.data;
 
-                // Store user data and token in localStorage
-                localStorage.setItem('userInfo', JSON.stringify({ token, profile }));
+                    // Store user data and token in localStorage
+                    const userInfo = { token, profile };
+
+                    // Store user data and token in localStorage
+                    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                    setUser(userInfo); // Update context
 
                 navigate('/home');
             }

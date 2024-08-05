@@ -14,7 +14,7 @@ const Navbar = ({ sideBarTogggle, setSideBarToggle }) => {
     return (
         <>
             <div>
-                <nav className={`bg-white px-3 py-2 border-b-2 border-slate-700  flex justify-between`}>
+                <nav className={`bg-white px-3 py-1 border-b-2 border-slate-700  flex justify-between`}>
                     <div className='flex items-center text-xl'>
                         {sideBarTogggle ? (
                             <FaTimes
@@ -37,7 +37,11 @@ const Navbar = ({ sideBarTogggle, setSideBarToggle }) => {
                                 className='text-white flex items-center cursor-pointer'
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
                             >
-                                <img className="w-14 h-14 rounded-full" src={photoUrl} alt="Rounded avatar" />
+                                <img 
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-300 shadow-sm"
+                                    src={photoUrl}
+                                    alt="Rounded avatar"
+                                />
                             </div>
                             
                         </div>
