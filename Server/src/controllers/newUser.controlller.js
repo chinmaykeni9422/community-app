@@ -13,16 +13,16 @@ export const checkUserMobNum = async (req, res) => {
             return res.send(new ApiResponse(400, null, "Mobile number is required"));
         }
 
-        const user = await mobNumCheck(mobile_number);
-
-        if (user.length === 0) {
-            return res.send(new ApiResponse(400, null, "Mobile number not exists"));
-        }
-
         const user1 = await mobNumCheck2(mobile_number);
 
         if (user1.length > 0) {
             return res.send(new ApiResponse(400, null, "Mobile number alredy registered"));
+        }
+
+        const user = await mobNumCheck(mobile_number);
+
+        if (user.length === 0) {
+            return res.send(new ApiResponse(400, null, "Mobile number not exists"));
         }
 
         // Generate OTP
@@ -69,7 +69,7 @@ export const verifyOTP = async (req, res) => {
             return res.send(new ApiResponse(400, null, "Invalid OTP"));
         }
 
-        // Create user
+        // Create user`
         const userId = await createNewuser(mobile_number, password);
 
         // Clear OTP and temporary data
