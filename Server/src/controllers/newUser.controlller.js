@@ -113,7 +113,7 @@ export const createUserProfileController = async (req, res) => {
         const uploadResult = await uploadOnCloudinary(filePath);
 
         if (!uploadResult) {
-            return res.send(new ApiResponse(500, {}, 'Failed to upload image'));
+            return res.send(new ApiResponse(400, {}, 'Failed to upload image'));
         }
 
         const photo_url = uploadResult.url;

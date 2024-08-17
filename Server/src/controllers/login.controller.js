@@ -36,14 +36,21 @@ export const checkUserLogin = async (req, res) => {
         // Check if user profile is completed
         const userProfile = await checkUserProfile(user[0].user_id);
 
+        // If the profile is not completed, return an appropriate response
+        if (userProfile.length === 0) {
+            return res.send(new ApiResponse(200, {
+                user_id: user[0].user_id,
+                redirectTo: 'ProfileForm'
+            }, "Profile is incomplete. Please complete your profile."));
+        }
+
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
         // Prepare the response data
         const responseData = {
             user_id: user[0].user_id,
             token,
-            profile: userProfile.length > 0 ? userProfile[0] : null, // Include profile data if exists
-            redirectTo: userProfile.length === 0 ? 'ProfileForm' : 'Home' // Redirect based on profile completion
+            profile: userProfile[0],
         };
 
         return res.send(new ApiResponse(200, responseData, "Login successful"));
