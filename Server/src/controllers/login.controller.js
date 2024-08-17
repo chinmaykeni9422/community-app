@@ -43,7 +43,7 @@ export const checkUserLogin = async (req, res) => {
             user_id: user[0].user_id,
             token,
             profile: userProfile.length > 0 ? userProfile[0] : null, // Include profile data if exists
-            redirectTo: userProfile.length === 0 ? '/profile' : '/home' // Redirect based on profile completion
+            redirectTo: userProfile.length === 0 ? 'ProfileForm' : 'Home' // Redirect based on profile completion
         };
 
         return res.send(new ApiResponse(200, responseData, "Login successful"));

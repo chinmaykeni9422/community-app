@@ -140,7 +140,7 @@ export const createUserProfileController = async (req, res) => {
         const userId = await createUserProfile(profile);
 
         // Generate token
-        const token = generateToken({ user_id: userId, email_id });
+        const token = generateToken({ user_id: userId, mobile_number });
 
         return res.send(new ApiResponse(201, {userId, profile, token}, 'User profile created successfully'));
     } catch (error) {
