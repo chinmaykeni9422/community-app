@@ -86,6 +86,7 @@ export const createUserProfileController = async (req, res) => {
     try {
         const {
             user_id,
+            mobile_number,
             firstName,
             middleName,
             lastName,
@@ -140,7 +141,12 @@ export const createUserProfileController = async (req, res) => {
         const userId = await createUserProfile(profile);
 
         // Generate token
-        const token = generateToken({ user_id: userId, mobile_number });
+        const token = generateToken({ user_id: userId, mobile_number: mobile_number });
+
+        if (!token) {
+            console.error('Token generation failed');
+            return res.status(500).json(new ApiResponse(500, {}, 'Token generation failed'));
+        }
 
         return res.send(new ApiResponse(201, {userId, profile, token}, 'User profile created successfully'));
     } catch (error) {
