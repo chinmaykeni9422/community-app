@@ -1,4 +1,4 @@
-import { mobNumCheck, checkUserProfile, addMobNum, mobNumCheck2 } from "../query/newUser.query.js";
+import { mobNumCheck, checkUserProfile, addMobNum, mobNumCheck2, getUserNumbers } from "../query/newUser.query.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import {generateToken} from '../utils/generateToken.js'
@@ -10,7 +10,6 @@ const verifyPassword = (password, UserPassword) => {
     return true ;
 };
 
-// Controller function to check user login
 export const checkUserLogin = async (req, res) => {
     const { mobile_number, password } = req.body;
 
@@ -90,3 +89,26 @@ export const addUserNumber = async (req, res) => {
         throw new ApiError(500, `Error: ${error.message}`);
     }
 }
+
+export const getNumbers = async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        if (!user_id) {
+            return res.send(new ApiResponse(400, null, "User ID is missing"));
+        }
+
+        // Fetch the mobile numbers for the given user
+        const numbers = await getUserNumbers(user_id);
+
+        // If no numbers are found
+        if (numbers.length === 0) {
+            return res.send(new ApiResponse(404, null, "No mobile numbers found for this user"));
+        }
+
+        return res.send(new ApiResponse(200, numbers, "Mobile numbers fetched successfully"));
+    } catch (error) {
+        throw new ApiError(500, `Error: ${error.message}`);
+    }
+};
+

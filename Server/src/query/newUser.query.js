@@ -104,3 +104,10 @@ export const addMobNum = async (userId, mobilenum) => {
     )
     return rows ;
 }
+
+export const getUserNumbers = async (userId) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM user_numbers WHERE user_id = ?', [userId]
+    );
+    return rows;
+};
