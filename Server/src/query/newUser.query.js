@@ -111,3 +111,62 @@ export const getUserNumbers = async (userId) => {
     );
     return rows;
 };
+
+export const UpdateUserProfile = async (profileData) => {
+
+    const {
+        user_id,
+        first_name,
+        middle_name,
+        last_name,
+        marital_status,
+        caste,
+        occupation,
+        birthdate,
+        gender,
+        current_pin_code,
+        working_place,
+        native_village_city,
+        current_village_city,
+        email_id,
+        hobbies
+    } = profileData
+
+    const [rows] = await pool.query(
+        `UPDATE userprofile 
+         SET first_name = ?, 
+             middle_name = ?, 
+             last_name = ?, 
+             marital_status = ?, 
+             caste = ?, 
+             occupation = ?, 
+             birthdate = ?, 
+             gender = ?, 
+             current_pin_code = ?, 
+             working_place = ?, 
+             native_village_city = ?, 
+             current_village_city = ?, 
+             email_id = ?,
+             hobbies = ?
+         WHERE user_id = ?`,
+        [
+            first_name,
+            middle_name,
+            last_name,
+            marital_status,
+            caste,
+            occupation,
+            birthdate,
+            gender,
+            current_pin_code,
+            working_place,
+            native_village_city,
+            current_village_city,
+            email_id,
+            hobbies,
+            user_id
+        ]
+    );
+
+    return rows;
+};

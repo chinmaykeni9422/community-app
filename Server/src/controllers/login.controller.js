@@ -1,13 +1,13 @@
-import { mobNumCheck, checkUserProfile, addMobNum, mobNumCheck2, getUserNumbers } from "../query/newUser.query.js";
+import { mobNumCheck, checkUserProfile, UpdateUserProfile, addMobNum, mobNumCheck2, getUserNumbers } from "../query/newUser.query.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import {generateToken} from '../utils/generateToken.js'
+import { generateToken } from '../utils/generateToken.js'
 
 const verifyPassword = (password, UserPassword) => {
-    if(password != UserPassword){
-        return false ;
+    if (password != UserPassword) {
+        return false;
     }
-    return true ;
+    return true;
 };
 
 export const checkUserLogin = async (req, res) => {
@@ -59,7 +59,7 @@ export const checkUserLogin = async (req, res) => {
 };
 
 export const addUserNumber = async (req, res) => {
-    const {mobile_number, user_id} = req.body ;
+    const { mobile_number, user_id } = req.body;
 
     try {
         if (!mobile_number || !user_id) {
@@ -111,4 +111,57 @@ export const getNumbers = async (req, res) => {
         throw new ApiError(500, `Error: ${error.message}`);
     }
 };
+
+export const UpdateProfile = async (req, res) => {
+    const {
+        user_id,
+        first_name,
+        middle_name,
+        last_name,
+        marital_status,
+        caste,
+        occupation,
+        birthdate,
+        gender,
+        current_pin_code,
+        working_place,
+        native_village_city,
+        current_village_city,
+        email_id,
+        hobbies
+    } = req.body;
+
+    try {
+
+        const profileToUpdate = {
+            user_id,
+            first_name,
+            middle_name,
+            last_name,
+            marital_status,
+            caste,
+            occupation,
+            birthdate,
+            gender,
+            current_pin_code,
+            working_place,
+            native_village_city,
+            current_village_city,
+            email_id,
+            hobbies
+        };
+
+        const result = await UpdateUserProfile(profileToUpdate)
+
+        if (result.affectedRows > 0) {
+            return res.send(new ApiResponse(200, profileToUpdate, 'Profile updated successfully'));
+        } else {
+            return res.send(new ApiResponse(400, {}, 'Profile not found or no changes made'));
+        }
+
+    } catch (error) {
+        throw new ApiError(500, `Error: ${error.message}`);
+    }
+
+}
 
