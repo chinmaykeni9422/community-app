@@ -151,6 +151,10 @@ export const UpdateProfile = async (req, res) => {
             hobbies
         };
 
+        if(!user_id){
+            return res.send(new ApiResponse(400, {}, 'user_id is not available'));
+        }
+
         const result = await UpdateUserProfile(profileToUpdate)
 
         if (result.affectedRows > 0) {
