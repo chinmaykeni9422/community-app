@@ -2,7 +2,6 @@ CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     mobile_number VARCHAR(15) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    reference_mobile_number VARCHAR(15),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -11,10 +10,10 @@ CREATE TABLE users (
 CREATE TABLE UserProfile (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    caste VARCHAR(50),
-    current_village_city VARCHAR(100),
+    caste ENUM('Aagri','Koli') ,
+    current_village_city ENUM('Virar','Arnala','Dandi'),
     current_pin_code VARCHAR(10),
-    native_village_city VARCHAR(100),
+    native_village_city ENUM('Virar','Arnala','Dandi'),
     first_name VARCHAR(50),
     middle_name VARCHAR(50),
     last_name VARCHAR(50),
