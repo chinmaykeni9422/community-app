@@ -73,7 +73,7 @@ export const checkUserLogin = async (req, res) => {
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
         // Fetch configuration value for 'showAdPopup'
-        const showAdPopup = await getConfigValue('showAdPopup');
+        const showAdPopup = await getConfig('showAdPopup');
 
         const value = showAdPopup.data.value ;
 
