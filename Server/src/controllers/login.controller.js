@@ -18,6 +18,20 @@ const verifyPassword = (password, UserPassword) => {
     return true;
 };
 
+export const getConfig = async (req, res) => {
+    try {
+        const value = await getConfiguration();
+
+        if (value === null) {
+            return res.send(new ApiResponse(404, null, "Configuration not found"));
+        }
+
+        return res.send(new ApiResponse(200, { key: "showAdPopup", value }, "Configuration fetched successfully"));
+    } catch (error) {
+        throw new ApiError(500, `Error: ${error.message}`);
+    }
+};
+
 export const checkUserLogin = async (req, res) => {
     const { mobile_number, password } = req.body;
 
@@ -53,11 +67,15 @@ export const checkUserLogin = async (req, res) => {
 
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
+        // Fetch the configuration value (showAdPopup)
+        const showAdPopupValue = await getConfiguration();
+
         // Prepare the response data
         const responseData = {
             user_id: user[0].user_id,
             token,
             profile: userProfile[0],
+            value: showAdPopupValue
         };
 
         return res.send(new ApiResponse(200, responseData, "Login successful"));
@@ -177,16 +195,3 @@ export const UpdateProfile = async (req, res) => {
 
 }
 
-export const getConfig = async (req, res) => {
-    try {
-        const value = await getConfiguration();
-
-        if (value === null) {
-            return res.send(new ApiResponse(404, null, "Configuration not found"));
-        }
-
-        return res.send(new ApiResponse(200, { key: "showAdPopup", value }, "Configuration fetched successfully"));
-    } catch (error) {
-        throw new ApiError(500, `Error: ${error.message}`);
-    }
-};
