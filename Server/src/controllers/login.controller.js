@@ -18,24 +18,6 @@ const verifyPassword = (password, UserPassword) => {
     return true;
 };
 
-export const getConfig = async (req, res, keyPar) => {
-  
-    try {
-      if (!keyPar) {
-        return res.send(new ApiResponse(400, null, "Configuration key is missing"));
-      }
-  
-      const value = await getConfiguration(keyPar);
-      if (value === null) {
-        return res.send(new ApiResponse(404, null, "Configuration not found"));
-      }
-  
-      return res.send(new ApiResponse(200, { key, value }, "Configuration fetched successfully"));
-    } catch (error) {
-      throw new ApiError(500, `Error: ${error.message}`);
-    }
-};
-
 export const checkUserLogin = async (req, res) => {
     const { mobile_number, password } = req.body;
 
@@ -71,17 +53,11 @@ export const checkUserLogin = async (req, res) => {
 
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
-        // Fetch configuration value for 'showAdPopup'
-        const showAdPopup = await getConfig('showAdPopup');
-
-        const value = showAdPopup.data.value ;
-
         // Prepare the response data
         const responseData = {
             user_id: user[0].user_id,
             token,
             profile: userProfile[0],
-            showAdPopup: value
         };
 
         return res.send(new ApiResponse(200, responseData, "Login successful"));
@@ -200,3 +176,22 @@ export const UpdateProfile = async (req, res) => {
     }
 
 }
+
+export const getConfig = async (req, res) => {
+    const { key } = req.body;
+  
+    try {
+      if (!key) {
+        return res.send(new ApiResponse(400, null, "Configuration key is missing"));
+      }
+  
+      const value = await getConfiguration(key);
+      if (value === null) {
+        return res.send(new ApiResponse(404, null, "Configuration not found"));
+      }
+  
+      return res.send(new ApiResponse(200, { key, value }, "Configuration fetched successfully"));
+    } catch (error) {
+      throw new ApiError(500, `Error: ${error.message}`);
+    }
+};
