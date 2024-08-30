@@ -178,7 +178,7 @@ export const UpdateProfile = async (req, res) => {
 }
 
 export const getConfig = async (req, res) => {
-    const { key } = req.query;
+    const { key } = req.body;
   
     try {
       if (!key) {
