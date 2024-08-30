@@ -18,8 +18,7 @@ const verifyPassword = (password, UserPassword) => {
     return true;
 };
 
-export const getConfig = async (req, res) => {
-    const { key } = req.body;
+export const getConfig = async (key) => {
   
     try {
       if (!key) {
@@ -38,7 +37,7 @@ export const getConfig = async (req, res) => {
 };
 
 export const checkUserLogin = async (req, res) => {
-    const { mobile_number, password } = req.body;
+    const { mobile_number, password, key } = req.body;
 
     try {
         if (!mobile_number || !password) {
@@ -73,7 +72,7 @@ export const checkUserLogin = async (req, res) => {
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
         // Fetch configuration value for 'showAdPopup'
-        const showAdPopup = await getConfig('showAdPopup');
+        const showAdPopup = await getConfig(key);
 
         const value = showAdPopup.data.value ;
 
