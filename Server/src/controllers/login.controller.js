@@ -18,14 +18,14 @@ const verifyPassword = (password, UserPassword) => {
     return true;
 };
 
-export const getConfig = async (key) => {
+export const getConfig = async (req, res, keyPar) => {
   
     try {
-      if (!key) {
+      if (!keyPar) {
         return res.send(new ApiResponse(400, null, "Configuration key is missing"));
       }
   
-      const value = await getConfiguration(key);
+      const value = await getConfiguration(keyPar);
       if (value === null) {
         return res.send(new ApiResponse(404, null, "Configuration not found"));
       }
@@ -37,7 +37,7 @@ export const getConfig = async (key) => {
 };
 
 export const checkUserLogin = async (req, res) => {
-    const { mobile_number, password, key } = req.body;
+    const { mobile_number, password } = req.body;
 
     try {
         if (!mobile_number || !password) {
@@ -72,7 +72,7 @@ export const checkUserLogin = async (req, res) => {
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
         // Fetch configuration value for 'showAdPopup'
-        const showAdPopup = await getConfig(key);
+        const showAdPopup = await getConfig('showAdPopup');
 
         const value = showAdPopup.data.value ;
 
