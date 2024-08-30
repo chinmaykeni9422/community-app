@@ -7,6 +7,5 @@ router.post("/login", checkUserLogin) ;
 router.post("/addNumber", addUserNumber) ;
 router.get("/Numbers/:user_id", getNumbers) ;
 router.post("/profileUpdate", UpdateProfile) ;
-router.get('/config', getConfig);
 
 export default router;
