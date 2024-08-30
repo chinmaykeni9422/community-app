@@ -171,7 +171,7 @@ export const UpdateUserProfile = async (profileData) => {
     return rows;
 };
 
-export const getConfiguration = async (key) => {
-    const [rows] = await pool.query('SELECT `value` FROM configuration WHERE `key` = ?', [key]);
+export const getConfiguration = async () => {
+    const [rows] = await pool.query('SELECT `value` FROM configuration WHERE `key` = "showAdPopup"');
     return rows.length > 0 ? rows[0].value : null;
-  };
+};
