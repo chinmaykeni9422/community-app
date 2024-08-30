@@ -1,4 +1,12 @@
-import { mobNumCheck, checkUserProfile, UpdateUserProfile, addMobNum, mobNumCheck2, getUserNumbers } from "../query/newUser.query.js";
+import { 
+        mobNumCheck, 
+        checkUserProfile, 
+        UpdateUserProfile, 
+        addMobNum, 
+        mobNumCheck2, 
+        getUserNumbers,
+        getConfiguration
+    } from "../query/newUser.query.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { generateToken } from '../utils/generateToken.js'
@@ -169,3 +177,21 @@ export const UpdateProfile = async (req, res) => {
 
 }
 
+export const getConfig = async (req, res) => {
+    const { key } = req.query;
+  
+    try {
+      if (!key) {
+        return res.send(new ApiResponse(400, null, "Configuration key is missing"));
+      }
+  
+      const value = await getConfiguration(key);
+      if (value === null) {
+        return res.send(new ApiResponse(404, null, "Configuration not found"));
+      }
+  
+      return res.send(new ApiResponse(200, { key, value }, "Configuration fetched successfully"));
+    } catch (error) {
+      throw new ApiError(500, `Error: ${error.message}`);
+    }
+};
