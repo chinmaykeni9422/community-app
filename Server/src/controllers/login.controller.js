@@ -75,7 +75,7 @@ export const checkUserLogin = async (req, res) => {
             user_id: user[0].user_id,
             token,
             profile: userProfile[0],
-            value: showAdPopupValue
+            showAdPopup: showAdPopupValue
         };
 
         return res.send(new ApiResponse(200, responseData, "Login successful"));
