@@ -67,15 +67,11 @@ export const checkUserLogin = async (req, res) => {
 
         const token = generateToken({ user_id: user[0].user_id, mobile_number: user[0].mobile_number });
 
-        // Fetch the configuration value (showAdPopup)
-        const showAdPopupValue = await getConfiguration();
-
         // Prepare the response data
         const responseData = {
             user_id: user[0].user_id,
             token,
-            profile: userProfile[0],
-            showAdPopup: showAdPopupValue
+            profile: userProfile[0]
         };
 
         return res.send(new ApiResponse(200, responseData, "Login successful"));
